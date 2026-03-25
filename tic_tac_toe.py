@@ -26,7 +26,10 @@ def get_move(player, board):
     :return: position
     """
     while True:
-          position=input(f" {player} Choose a spot from 1-9: ")
+          position=input(f" {player} Choose a spot from 1-9 or 'r' to reset:")
+
+          if position.lower()=="r":
+              return "reset"
           if not position.isdigit():
             print("Please enter a number from 1-9")
             continue
@@ -107,6 +110,15 @@ def switch_player(current):
         return "X"
 
 
+#W#def updat_score(symbol,X_score,o_score):
+
+    if symbol=="X":
+        X_score += 1
+    if symbol=="O":
+        o_score += 1
+
+    return X_score, o_score
+
 def play_game():
     """
 
@@ -118,12 +130,18 @@ def play_game():
     while True:
         print_board(board)
         print(f"--- {current_symbol}'s Turn ---")
+        scores = {"X": 0, "O": 0}
         position = get_move(current_symbol, board)
+        if position == "reset":
+            print("\n NEW GAME STARTED ")
+            play_game()
         make_move(board, position, current_symbol)
 
         if check_winner(board, current_symbol):
             print_board(board)
+            scores[current_symbol] += 1
             print(f"Player {current_symbol} wins!")
+            print(scores)
             break
 
         if is_tie(board):
@@ -135,6 +153,7 @@ def play_game():
 
     user_choice = input("Game Over! Up for another round?\n 1.YES \n 2.NO\n")
     if user_choice == "1":
+        print(" \n NEW GAME STARTED ")
         play_game()
 
 
