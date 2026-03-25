@@ -110,14 +110,13 @@ def switch_player(current):
         return "X"
 
 
-#W#def updat_score(symbol,X_score,o_score):
+def updat_score(board,symbol,scores):
 
-    if symbol=="X":
-        X_score += 1
-    if symbol=="O":
-        o_score += 1
+    check_winner(board, symbol)
+    scores[symbol] += 1
+    return scores
 
-    return X_score, o_score
+
 
 def play_game():
     """
@@ -130,18 +129,18 @@ def play_game():
     while True:
         print_board(board)
         print(f"--- {current_symbol}'s Turn ---")
-        scores = {"X": 0, "O": 0}
+
         position = get_move(current_symbol, board)
         if position == "reset":
             print("\n NEW GAME STARTED ")
-            play_game()
+            return play_game()
         make_move(board, position, current_symbol)
 
         if check_winner(board, current_symbol):
             print_board(board)
-            scores[current_symbol] += 1
+
             print(f"Player {current_symbol} wins!")
-            print(scores)
+            print(updat_score(board,current_symbol,scores))
             break
 
         if is_tie(board):
@@ -156,5 +155,5 @@ def play_game():
         print(" \n NEW GAME STARTED ")
         play_game()
 
-
+scores = {"X": 0, "0": 0}
 play_game()
